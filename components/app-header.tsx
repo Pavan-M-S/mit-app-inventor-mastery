@@ -1,6 +1,7 @@
 'use client'
 
 import { GraduationCap, ListTree, Map, Moon, Search, Sun } from 'lucide-react'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -29,37 +30,71 @@ export function AppHeader({
 }: AppHeaderProps) {
   const pct = total === 0 ? 0 : Math.round((completed / total) * 100)
 
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, [0, 50], ["0%", "50%"]);
+  const headerBlur = useTransform(scrollY, [0, 50], ["blur(0px)", "blur(12px)"]);
+  const headerBorder = useTransform(scrollY, [0, 50], ["rgba(var(--border), 0)", "rgba(var(--border), 0.5)"]);
+
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-md">
+    <motion.header
+      style={{
+        backdropFilter: headerBlur,
+        borderColor: headerBorder,
+      }}
+      className="sticky top-0 z-30 border-b bg-background/70 backdrop-blur-xl transition-all duration-300"
+    >
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+         <motion.div
+            style={{ y: backgroundY }}
+            className="absolute -top-[100px] -left-[100px] h-[300px] w-[300px] rounded-full bg-primary/10 blur-[80px]"
+         />
+         <motion.div
+            style={{ y: backgroundY }}
+            className="absolute -top-[50px] -right-[50px] h-[200px] w-[200px] rounded-full bg-brand-blue/10 blur-[60px]"
+         />
+      </div>
+
       <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex min-w-0 items-center gap-2.5"
+          >
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-brand-blue text-primary-foreground shadow-lg shadow-primary/20">
               <GraduationCap className="size-5" />
             </span>
             <div className="min-w-0">
-              <h1 className="truncate text-[15px] leading-tight font-semibold text-foreground">
+              <h1 className="truncate text-base leading-tight font-bold text-foreground tracking-tight">
                 Master AppInventor
               </h1>
-              <p className="truncate text-[11px] text-muted-foreground">The Complete Learning Roadmap</p>
+              <p className="truncate text-xs text-muted-foreground font-medium">The Complete Learning Roadmap</p>
             </div>
-          </div>
+          </motion.div>
 
           {/* Search — grows on desktop */}
-          <div className="relative ml-auto hidden max-w-xs flex-1 sm:block">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative ml-auto hidden max-w-xs flex-1 sm:block group"
+          >
+            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
             <input
               type="search"
               value={query}
               onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Search lessons…"
               aria-label="Search lessons"
-              className="h-9 w-full rounded-full border border-border bg-card pr-3 pl-9 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
+              className="h-10 w-full rounded-full border border-border/50 bg-card/50 pr-3 pl-10 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:bg-background transition-all shadow-sm"
             />
-          </div>
+          </motion.div>
 
           {/* View switcher */}
-          <div className="hidden items-center rounded-full border border-border bg-card p-1 md:flex">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="hidden items-center rounded-full border border-border/50 bg-card/50 p-1 md:flex shadow-sm backdrop-blur-sm"
+          >
             <SegBtn active={view === 'map'} onClick={() => onViewChange('map')} icon={<Map className="size-4" />}>
               Map
             </SegBtn>
@@ -70,53 +105,76 @@ export function AppHeader({
             >
               Dashboard
             </SegBtn>
-          </div>
+          </motion.div>
 
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={onToggleTheme}
-            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="rounded-full"
+          <motion.div
+             initial={{ opacity: 0, x: 20 }}
+             animate={{ opacity: 1, x: 0 }}
           >
-            {isDark ? <Sun /> : <Moon />}
-          </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={onToggleTheme}
+              aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="rounded-full border-border/50 bg-card/50 shadow-sm hover:bg-accent/80 transition-colors"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={isDark ? 'dark' : 'light'}
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+                </motion.div>
+              </AnimatePresence>
+            </Button>
+          </motion.div>
         </div>
 
         {/* Mobile search */}
-        <div className="relative sm:hidden">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <div className="relative sm:hidden group">
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <input
             type="search"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
             placeholder="Search lessons…"
             aria-label="Search lessons"
-            className="h-9 w-full rounded-full border border-border bg-card pr-3 pl-9 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
+            className="h-10 w-full rounded-full border border-border/50 bg-card/50 pr-3 pl-10 text-sm text-foreground outline-none placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:bg-background transition-all shadow-sm"
           />
         </div>
 
         {/* Progress */}
-        <div className="flex items-center gap-3">
+        <motion.div
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="flex items-center gap-3"
+        >
           <div
-            className="h-2 flex-1 overflow-hidden rounded-full bg-muted"
+            className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted/80 shadow-inner"
             role="progressbar"
             aria-valuenow={pct}
             aria-valuemin={0}
             aria-valuemax={100}
             aria-label="Overall course progress"
           >
-            <div
-              className="h-full rounded-full bg-primary transition-[width] duration-500 ease-out"
-              style={{ width: `${pct}%` }}
-            />
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${pct}%` }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="h-full rounded-full bg-gradient-to-r from-primary to-brand-blue relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite] -skew-x-12 -translate-x-full" />
+            </motion.div>
           </div>
-          <span className="shrink-0 text-xs font-medium text-muted-foreground tabular-nums">
+          <span className="shrink-0 text-xs font-semibold text-muted-foreground tabular-nums bg-card/50 px-2 py-0.5 rounded-full border border-border/50">
             {completed}/{total} · {pct}%
           </span>
-        </div>
+        </motion.div>
       </div>
-    </header>
+    </motion.header>
   )
 }
 
@@ -136,11 +194,18 @@ function SegBtn({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors',
-        active ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground',
+        'relative flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-semibold transition-colors z-10',
+        active ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
       )}
       aria-pressed={active}
     >
+      {active && (
+        <motion.div
+          layoutId="active-segment"
+          className="absolute inset-0 -z-10 rounded-full bg-primary shadow-md shadow-primary/20"
+          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+        />
+      )}
       {icon}
       {children}
     </button>
