@@ -1,33 +1,67 @@
-# mit-app-inventor-mastery
+# 📱 Master AppInventor — The Complete Learning Roadmap
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+> An interactive, highly-polished learning roadmap to master MIT App Inventor — from absolute basics to publishing your first app on Google Play.
 
-## Built with v0
+## ✨ Overview
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+**Master AppInventor** is a comprehensive, interactive Next.js application designed to guide learners through the MIT App Inventor ecosystem. The app features a visually stunning and responsive UI with smooth animations, offering a structured curriculum, interactive quizzes, and seamless progress tracking.
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_0gizPES8hLz685qNUwTCX2cFdR4H)
+## 🚀 Key Features
 
-## Getting Started
+- **Interactive Learning Roadmap**: A beautifully designed, step-by-step map view to navigate the curriculum.
+- **Progress Tracking**: Automatically tracks completed lessons and visualizes your overall mastery.
+- **Interactive Quizzes**: Test your knowledge with interactive multiple-choice questions at the end of every lesson.
+- **Rich Content Renderers**: Lessons feature beautifully styled text, important tips, and custom-designed visual code blocks mimicking App Inventor's interface.
+- **Responsive UI & Dark Mode**: Flawlessly adapts to any device with a carefully crafted dark mode for comfortable reading.
+- **Smooth Animations**: High-quality, professional transitions and interactions.
 
-First, run the development server:
+## 📚 Curriculum Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+The curriculum is divided into six comprehensive modules:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. 🚀 **Fundamentals & Environment Setup**: Get oriented and ship your first screen.
+2. 🔠 **UI Layouts & Advanced Logic**: Arrange clean interfaces and structure your code.
+3. 🎮 **Canvas, Animation & Game Mechanics**: Draw, move sprites, and detect collisions.
+4. 📻 **Hardware Sensors & IoT Connectivity**: Read the physical world and talk to devices.
+5. 💾 **Data Persistence & Web APIs**: Save data locally and sync with the cloud.
+6. 📦 **Polishing, Packaging & Publishing**: Turn a project into a shippable app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Technologies
 
-## Learn More
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Components**: [shadcn/ui](https://ui.shadcn.com/) & [Base UI](https://base-ui.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
-To learn more, take a look at the following resources:
+## 💻 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+This project uses `pnpm` as the package manager.
+
+### Prerequisites
+
+Make sure you have Node.js and `pnpm` installed.
+
+### Installation
+
+1. Clone the repository and navigate to the project directory:
+   ```bash
+   git clone <repository-url>
+   cd mit-app-inventor-mastery
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 📝 License
+
+This project is open-source and available under the [MIT License](LICENSE).
